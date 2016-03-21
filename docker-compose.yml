@@ -1,0 +1,28 @@
+proget:
+  restart: always
+  build: ./proget
+  ports:
+   - "8080:80"
+  volumes_from:
+   - pgdata
+  links:
+   - db
+
+db:
+  image: postgres:9.4
+  ports:
+   - "5432:5432"
+  volumes_from:
+   - pgdata
+  environment:
+   - POSTGRES_DB=ProGet
+   - POSTGRES_USER=proget
+   - POSTGRES_PASSWORD=proget
+
+pgdata:
+  image: postgres:9.4
+  volumes:
+   - /var/proget/packages
+   - /var/lib/postgres
+   - /var/logs/postgres
+  command: "true"
